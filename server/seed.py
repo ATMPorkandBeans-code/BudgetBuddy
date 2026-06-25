@@ -2,6 +2,8 @@ from app import app, db
 from models import Category
 
 with app.app_context():
+    db.session.query(Category).delete()
+    db.session.commit()
 
     categories = [
     # Needs (50%)
