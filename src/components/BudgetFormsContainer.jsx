@@ -1,12 +1,12 @@
-import IncomeForm from "../forms/IncomeForm"
+// import IncomeForm from "../forms/IncomeForm"
 
-function BudgetFormsContainer() {
-    return ( 
-        <div>
-            Budget Forms 
-            <IncomeForm />
-        </div>
-    )
-}
+// function BudgetFormsContainer() {
+//     return ( 
+//         <div>
+//             Budget Forms 
+//             <IncomeForm />
+//         </div>
+//     )
+// }
 
-export default BudgetFormsContainer;
+// export default BudgetFormsContainer;

@@ -1,16 +1,16 @@
-import ExpenseCard from "./ExpenseCard"
+// import ExpenseCard from "./ExpenseCard"
 
-function ExpenseList({expenses}) {
+// function ExpenseList({expenses}) {
     
-    return (
-        <ul>
-            {expenses.map((expense) => (
-                <ExpenseCard 
-                key={expense.name}
-                expense={expense} />
-            ))}
-        </ul>
-    )
-}
+//     return (
+//         <ul>
+//             {expenses.map((expense) => (
+//                 <ExpenseCard 
+//                 key={expense.name}
+//                 expense={expense} />
+//             ))}
+//         </ul>
+//     )
+// }
 
-export default ExpenseList;
+// export default ExpenseList;
