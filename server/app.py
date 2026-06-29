@@ -3,8 +3,10 @@ from flask_restful import Resource
 from config import app, db, api
 from models import User, UserSchema, Category, CategorySchema, Expense, ExpenseSchema
 from sqlalchemy.exc import IntegrityError
-from flask import make_response
 from sqlalchemy import func
+from flask_cors import CORS
+
+CORS(app, origins=["http://localhost:5000"]) 
 
 class Users(Resource):
     def post(self):
@@ -27,6 +29,7 @@ class Login(Resource):
         if user:
             session['user_id'] = user.id
             session['username'] = user.username
+            print(user.username)
             return UserSchema().dump(user), 200
         
         return {'error': 'User not Found'}, 404 
@@ -60,7 +63,6 @@ class Expenses(Resource):
             query = Expense.query.filter(Expense.user_id == user_id)
             
             if subcategory:
-                
                 query = query.join(Category).filter(Category.subcategory == subcategory)
 
             if is_fixed is not None:
@@ -76,6 +78,7 @@ class Expenses(Resource):
         if user_id:
             request_json = request.get_json()
             category = Category.query.filter(Category.category==request_json["category"]).first()
+            print(category)
             expense = Expense(
                 user_id = user_id,
                 category_id = category.id,
@@ -121,28 +124,21 @@ class BudgetPercentage(Resource):
                     result = Expense.query.join(Expense.category).with_entities(Category.subcategory, func.sum(Expense.amount).label("total"))\
                     .group_by(Category.subcategory).filter(Expense.user_id == user_id).all()
 
-                    print(result)
                     user = User.query.filter(User.id == user_id).first()
                     result_map = {}
                     
                     for percent in result:
-                        result_map[percent[0]] = f"{percent[1] / user.income:.1%}"
+                        result_map[percent[0]] = f"{percent[1]}"
+                    
+                    return result_map, 200
+ 
 
-                    print(result_map)
-                    return 
-
-
-
-
-
-    
-
-api.add_resource(Users, '/users', endpoint='users')
-api.add_resource(Login, '/login', endpoint='login')
-api.add_resource(Logout, '/logout', endpoint='logout')
-api.add_resource(UpdateIncome, '/users/income')
-api.add_resource(Expenses, '/expenses', endpoint='expenses')
-api.add_resource(BudgetPercentage, '/budget/percentage')
+api.add_resource(Users, '/api/users', endpoint='users')
+api.add_resource(Login, '/api/login', endpoint='login')
+api.add_resource(Logout, '/api/logout', endpoint='logout')
+api.add_resource(UpdateIncome, '/api/users/income')
+api.add_resource(Expenses, '/api/expenses', endpoint='expenses')
+api.add_resource(BudgetPercentage, '/api/budget/totals')
 
 if __name__ == '__main__':
     app.run(debug=True)
