@@ -124,7 +124,6 @@ class BudgetPercentage(Resource):
                     result = Expense.query.join(Expense.category).with_entities(Category.subcategory, func.sum(Expense.amount).label("total"))\
                     .group_by(Category.subcategory).filter(Expense.user_id == user_id).all()
 
-                    user = User.query.filter(User.id == user_id).first()
                     result_map = {}
                     
                     for percent in result:

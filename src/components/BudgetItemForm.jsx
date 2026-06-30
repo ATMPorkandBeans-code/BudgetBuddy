@@ -1,6 +1,7 @@
 import { useState } from "react";
+import "../styles/BudgetItemForm.css"
 
-function BudgetItemForm({ addBudgetItem }) {
+function BudgetItemForm({ addBudgetItem, closeForm }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
@@ -28,7 +29,6 @@ function BudgetItemForm({ addBudgetItem }) {
 
   const handleChange = (e) => {
     setCategory(e.target.value);
-
   };
 
   const handleCheckBoxChange = () => {
@@ -60,18 +60,25 @@ function BudgetItemForm({ addBudgetItem }) {
         throw new Error("New budget expense post failed.");
       })
       .then((data) => addBudgetItem(data));
+      closeForm();
   }
 
   return (
-    <div>
+    <div className="form-container" onClick={(e) => {
+      if (e.target.className === "form-container") closeForm()
+    }}>
+      <div className="form">
       Add Budget Item
       <form onSubmit={handleSubmit}>
+        <div className="form-group">
         <input
           type="text"
           placeholder="Item Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+        </div>
+        <div className="form-group">
         <label>Choose Category</label>
         <select id="category-select" value={category} onChange={handleChange}>
           <option value="" disabled>
@@ -83,19 +90,25 @@ function BudgetItemForm({ addBudgetItem }) {
             </option>
           ))}
         </select>
+        </div>
+        <div className="form-group">
         <input
           type="text"
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
+        </div>
+        <div className="form-group">
         <input
           type="checkbox"
           checked={isFixed}
           onChange={handleCheckBoxChange}
         />
-        <button type="submit">Save</button>
+        </div>
+        <button type="submit" className="btn">Save</button>
       </form>
+      </div>
     </div>
   );
 }

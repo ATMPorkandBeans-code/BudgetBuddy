@@ -19,8 +19,8 @@ function LoginSignup() {
   return (
     <>
       <div className="toggleContainer">
-        <button onClick={() => setIsLogin(true)}>Login</button>
-        <button onClick={() => setIsLogin(false)}>
+        <button  onClick={() => setIsLogin(true)}>Login</button>
+        <button  onClick={() => setIsLogin(false)}>
             Sign Up
         </button>
       </div>
@@ -33,7 +33,7 @@ function LoginSignup() {
         onChange={(e) => setUsername(e.target.value)}
         />
         {error && <p className="error">{error}</p>}
-        <button className="submit" type="submit">
+        <button className="btn" type="submit">
             {isLogin ? "Login" : "Signup"}
         </button>
       </form>
