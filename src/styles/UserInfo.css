@@ -1,0 +1,29 @@
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.user-info .income {
+  font-weight: 600;
+  color: #222;
+}
+
+.user-info form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-info input {
+  border: 1px solid black;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  font-size: 1rem;
+}
+
+.user-info .btn {
+  margin-top: 0;
+}

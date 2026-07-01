@@ -1,0 +1,34 @@
+.app-header {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1d4ed8;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.toggle-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toggle-container button {
+  border: none;
+  background-color: #ccc;
+  color: #222;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toggle-container button.active {
+  background-color: #1d4ed8;
+  color: white;
+  box-shadow: 0px 5px 5px #ccc;
+}
+
+.error {
+  color: #e10d05;
+}

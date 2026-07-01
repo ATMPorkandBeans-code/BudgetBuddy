@@ -1,0 +1,26 @@
+.percent-display {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  text-align: center;
+}
+
+.percent-display > div {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #222;
+}
+
+.percent-display .needs {
+  background-color: #cfe2ff;
+}
+
+.percent-display .wants {
+  background-color: #ffe9b3;
+}
+
+.percent-display .savings {
+  background-color: #c8f7dc;
+}

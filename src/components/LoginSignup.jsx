@@ -1,5 +1,6 @@
 import {useState} from "react"
 import {useUser} from "../context/UserContext"
+import "../styles/LoginSignup.css"
 
 
 function LoginSignup() {
@@ -18,28 +19,37 @@ function LoginSignup() {
 
   return (
     <>
-      <div className="toggleContainer">
-        <button  onClick={() => setIsLogin(true)}>Login</button>
-        <button  onClick={() => setIsLogin(false)}>
-            Sign Up
-        </button>
-      </div>
+      <h1 className="app-header">BudgetBuddy</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        />
-        {error && <p className="error">{error}</p>}
-        <button className="btn" type="submit">
-            {isLogin ? "Login" : "Signup"}
-        </button>
-      </form>
+      {!user && (
+        <>
+          <div className="toggle-container">
+            <button className={`login ${isLogin ? "active" : ""}`} onClick={() => setIsLogin(true)}>Login</button>
+            <button className={`signup ${!isLogin ? "active" : ""}`} onClick={() => setIsLogin(false)}>
+                Sign Up
+            </button>
+         </div>
 
-      {user && <button onClick={logout}>Logout</button>}
-      
+          <div className="form">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+            <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            />
+            </div>
+            {error && <p className="error">{error}</p>}
+            <button className="btn" type="submit">
+                {isLogin ? "Login" : "Signup"}
+            </button>
+          </form>
+          </div>
+        </>
+      )}
+
+      {user && <button className="btn" onClick={logout}>Logout</button>}
     </>
   );
 }

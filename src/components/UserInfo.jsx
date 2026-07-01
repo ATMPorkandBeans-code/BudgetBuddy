@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/UserInfo.css";
 
 function UserInfo({ user, updateIncome }) {
   const [income, setIncome] = useState("");
@@ -11,8 +12,8 @@ function UserInfo({ user, updateIncome }) {
   }
 
   return (
-    <div>
-      <div>Income: ${user.income}</div>
+    <div className="card user-info">
+      <div className="income">Income: ${user.income}</div>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -20,7 +21,9 @@ function UserInfo({ user, updateIncome }) {
           value={income}
           onChange={(e) => setIncome(e.target.value)}
         />
-        <button type="submit">Submit new income for {user.username}</button>
+        <button className="btn" type="submit">
+          Submit new income for {user.username}
+        </button>
       </form>
     </div>
   );

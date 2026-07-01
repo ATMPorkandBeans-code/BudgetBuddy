@@ -129,7 +129,7 @@ function App() {
   return (
     <div className="App">
       <LoginSignup />
-      {user && <p>Hello {user.username}</p>}
+      {user && <p className="greeting">Hello {user.username}</p>}
       {user && <UserInfo user={user} updateIncome={updateIncome} />}
       {user && totals && <PercentDisplay totals={totals} user={user} />}
       {user && editedItems && <button className="btn" onClick={saveEditedItems}>Save Edited Budget</button>}
