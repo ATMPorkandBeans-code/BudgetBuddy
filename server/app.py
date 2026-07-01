@@ -1,4 +1,4 @@
-from flask import request, session
+from flask import request, session, jsonify
 from flask_restful import Resource
 from config import app, db, api
 from models import User, UserSchema, Category, CategorySchema, Expense, ExpenseSchema
@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func
 from flask_cors import CORS
 
-CORS(app, origins=["http://localhost:5000"]) 
+CORS(app, supports_credentials=True, origins=["http://localhost:5000"]) 
 
 class Users(Resource):
     def post(self):
@@ -97,11 +97,15 @@ class Expenses(Resource):
         user_id = session.get('user_id')
         if user_id:
             request_json = request.get_json()
-            expense = Expense.query.filter(Expense.id == request_json["expense_id"]).first()
+            category = Category.query.filter(Category.category==request_json["category"]["category"]).first()
+            expense = Expense.query.filter(Expense.id == request_json["id"]).first()
+            expense.name = request_json["name"]
+            expense.category_id = category.id
             expense.amount = request_json["amount"]
+            expense.is_fixed = request_json["is_fixed"]
             db.session.commit()
 
-            return ExpenseSchema().dump(expense), 401
+            return ExpenseSchema().dump(expense), 200
 
         return {'error': '401 Unauthorized'}, 401
     
@@ -109,10 +113,10 @@ class Expenses(Resource):
         user_id = session.get('user_id')
         if user_id:
             request_json = request.get_json()
-            Expense.query.filter(Expense.id == request_json["expense_id"]).delete()
+            Expense.query.filter(Expense.id == request_json["id"]).delete()
             db.session.commit()
 
-            return {'Expense Deleted.'}
+            return {"status": "deleted"}, 200
 
         return {'error': '401 Unauthorized'}, 401
     
@@ -120,7 +124,6 @@ class BudgetPercentage(Resource):
             def get(self):
                 user_id = session.get('user_id')
                 if user_id:
-
                     result = Expense.query.join(Expense.category).with_entities(Category.subcategory, func.sum(Expense.amount).label("total"))\
                     .group_by(Category.subcategory).filter(Expense.user_id == user_id).all()
 

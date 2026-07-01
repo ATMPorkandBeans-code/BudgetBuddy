@@ -1,13 +1,12 @@
 import { useState } from "react";
-import "../styles/BudgetItemForm.css"
+import "../styles/BudgetItemForm.css";
 
 function BudgetItemForm({ addBudgetItem, closeForm }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("0");
   const [isFixed, setIsFixed] = useState(false);
   const [error, setError] = useState(null);
-
   const categories = [
     "Housing",
     "Utilities",
@@ -32,19 +31,18 @@ function BudgetItemForm({ addBudgetItem, closeForm }) {
   };
 
   const handleCheckBoxChange = () => {
-    setIsFixed(prevValue => !prevValue);
-        console.log(isFixed)
+    setIsFixed((prevValue) => !prevValue);
   };
 
   function handleSubmit(e) {
     e.preventDefault();
     setError(null);
-    
+
     const item = {
-      "name": name,
-      "category": category,
-      "amount": amount,
-      "is_fixed": isFixed,
+      name: name,
+      category: category,
+      amount: amount,
+      is_fixed: isFixed,
     };
 
     fetch("/api/expenses", {
@@ -60,54 +58,63 @@ function BudgetItemForm({ addBudgetItem, closeForm }) {
         throw new Error("New budget expense post failed.");
       })
       .then((data) => addBudgetItem(data));
-      closeForm();
+    closeForm();
   }
 
   return (
-    <div className="form-container" onClick={(e) => {
-      if (e.target.className === "form-container") closeForm()
-    }}>
+    <div
+      className="form-container"
+      onClick={(e) => {
+        if (e.target.className === "form-container") closeForm();
+      }}
+    >
       <div className="form">
-      Add Budget Item
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-        <input
-          type="text"
-          placeholder="Item Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        </div>
-        <div className="form-group">
-        <label>Choose Category</label>
-        <select id="category-select" value={category} onChange={handleChange}>
-          <option value="" disabled>
-            --Please choose a category--
-          </option>
-          {categories.map((cat, index) => (
-            <option key={index} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-        </div>
-        <div className="form-group">
-        <input
-          type="text"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        </div>
-        <div className="form-group">
-        <input
-          type="checkbox"
-          checked={isFixed}
-          onChange={handleCheckBoxChange}
-        />
-        </div>
-        <button type="submit" className="btn">Save</button>
-      </form>
+        Add Budget Item
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Item Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Choose Category</label>
+            <select
+              id="category-select"
+              value={category}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                --Please choose a category--
+              </option>
+              {categories.map((cat, index) => (
+                <option key={index} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="checkbox"
+              checked={isFixed}
+              onChange={handleCheckBoxChange}
+            />
+          </div>
+          <button type="submit" className="btn">
+            Save
+          </button>
+        </form>
       </div>
     </div>
   );

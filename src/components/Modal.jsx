@@ -1,30 +1,38 @@
 import "../styles/Modal.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function Modal({ closeModal, addEditedItem, defaultValue, addBudgetItem }) {
+function Modal({ closeModal, addEditedItem, itemToEdit }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [isFixed, setIsFixed] = useState(false);
   const [error, setError] = useState(null);
-  const categories = [
-    "Housing",
-    "Utilities",
-    "Groceries",
-    "Transportation",
-    "Insurance",
-    "Minimum Debt Payments",
-    "Dining Out",
-    "Shopping",
-    "Streaming Services",
-    "Travel",
-    "Hobbies",
-    "Upgraded Tech",
-    "Emergency Fund",
-    "Retirement Savings",
-    "Investments",
-    "Extra Debt Principal",
-  ];
+
+  const categories = {
+    "Housing": "needs",
+    "Utilties": "needs",
+    "Groceries": "needs",
+    "Transportation": "needs",
+    "Insurance": "needs",
+    "Minimum Debt Payments": "needs",
+    "Dining Out": "wants",
+    "Shopping": "wants",
+    "Streaming Services": "wants",
+    "Travel": "wants",
+    "Hobbies": "wants",
+    "Upgraded Tech": "wants",
+    "Emergency Fund": "savings",
+    "Retirement Savings": "savings",
+    "Investments": "savings",
+    "Extra Debt Principal": "savings"
+  }
+
+  useEffect(() => {
+    setName(itemToEdit["name"]);
+    setCategory(itemToEdit.category.category);
+    setAmount(itemToEdit["amount"]);
+    setIsFixed(itemToEdit.is_fixed);
+  }, [itemToEdit]);
 
   const handleChange = (e) => {
     setCategory(e.target.value);
@@ -37,19 +45,22 @@ function Modal({ closeModal, addEditedItem, defaultValue, addBudgetItem }) {
   function handleSubmit(e) {
     e.preventDefault();
     setError(null);
-    const item = {
-      name: name,
-      category: category,
-      amount: amount,
-      is_fixed: isFixed,
-    };
-    addEditedItem(item);
+    itemToEdit.name = name;
+    itemToEdit.category.category = category;
+    itemToEdit.category.subcategory = categories[category]
+    itemToEdit.amount = amount;
+    itemToEdit.is_fixed = isFixed
+    addEditedItem(itemToEdit);
+    closeModal();
   }
 
   return (
-    <div className="modal-container" onClick={(e) => {
-      if (e.target.className === "modal-container") closeModal()
-    }}>
+    <div
+      className="modal-container"
+      onClick={(e) => {
+        if (e.target.className === "modal-container") closeModal();
+      }}
+    >
       <div className="modal">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -57,7 +68,7 @@ function Modal({ closeModal, addEditedItem, defaultValue, addBudgetItem }) {
             <input
               name="page"
               type="text"
-              placeholder={defaultValue["name"]}
+              placeholder="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -72,7 +83,7 @@ function Modal({ closeModal, addEditedItem, defaultValue, addBudgetItem }) {
               <option value="" disabled>
                 --Please choose a category--
               </option>
-              {categories.map((cat, index) => (
+              {Object.keys(categories).map((cat, index) => (
                 <option key={index} value={cat}>
                   {cat}
                 </option>
@@ -83,7 +94,7 @@ function Modal({ closeModal, addEditedItem, defaultValue, addBudgetItem }) {
             <label htmlFor="amount">Amount</label>
             <input
               type="text"
-              placeholder={defaultValue["amount"]}
+              placeholder="amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
@@ -91,11 +102,14 @@ function Modal({ closeModal, addEditedItem, defaultValue, addBudgetItem }) {
           <div className="form-group">
             <label htmlFor="isFixed">Is Fixed</label>
             <input
+              key={itemToEdit?.id || "new-item"}
               type="checkbox"
               checked={isFixed}
               onChange={handleCheckBoxChange}
             />
-          <button type="submit" className="btn">Save</button>
+            <button type="submit" className="btn">
+              Save
+            </button>
           </div>
         </form>
       </div>
